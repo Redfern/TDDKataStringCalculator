@@ -14,7 +14,6 @@ namespace StringCalculator
             var output = new Calculator().Calculate(input);
             Console.WriteLine(string.Concat("For ", input, "we got.. ", output));
 
-            // keep the console open
             Console.WriteLine("");
             Console.WriteLine("********************************************************");
             Console.WriteLine("---> Press enter to close console");

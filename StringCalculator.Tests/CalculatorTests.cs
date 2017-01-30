@@ -51,8 +51,8 @@ namespace StringCalculator.Tests
         }
 
         [Theory]
-        [InlineData("//;\n1;2", 3)]
-        [InlineData("//(\n1(2", 3)]
+        [InlineData("//[;]\n1;2", 3)]
+        [InlineData("//[(]\n1(2", 3)]
         public void ShouldAllowCustomDelimiters(string input, int output)
         {
             var result = _calculator.Calculate(input);
@@ -70,6 +70,36 @@ namespace StringCalculator.Tests
             exception.Should().BeOfType<Exception>();
 
             exception.Message.Should().Be(string.Concat("negatives not allowed, passed: ", negatives));
+        }
+
+        [Theory]
+        [InlineData("1,2,3,1001", 6)]
+        [InlineData("1,2,3,2001", 6)]
+        [InlineData("1,2,3,10000000", 6)]
+        public void ShouldIgnoreNumbersHigherThan1000(string input, int output)
+        {
+            var result = _calculator.Calculate(input);
+
+            result.Should().Be(output);
+        }
+
+        [Theory]
+        [InlineData("//[***]\n1***2***3", 6)]
+        [InlineData("//[***%%]\n1***%%2***%%3", 6)]
+        public void ShouldHandleCustomLengthDelimiters(string input, int output)
+        {
+            var result = _calculator.Calculate(input);
+
+            result.Should().Be(output);
+        }
+
+        [Theory]
+        [InlineData("//[%%][$$]\n1%%2$$3", 6)]
+        public void ShouldHandleMultipleCustomLengthDelimiters(string input, int output)
+        {
+            var result = _calculator.Calculate(input);
+
+            result.Should().Be(output);
         }
     }
 }
