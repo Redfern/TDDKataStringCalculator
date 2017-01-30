@@ -1,1 +1,1 @@
-A simple string calculator kata writen in C#
+A string calculator kata written in C# Dot Net Core
